@@ -16,6 +16,8 @@ int main(int argc, char* argv[]) {
     std::vector<neu::vec3> points{ { -0.5f, -0.5f, 0 }, { 0, 0.5f, 0 }, { 0.5f, -0.5f, 0 } }; 
     std::vector<neu::vec3> colors{ { 1, 0, 0 }, { 0, 1, 0 }, { 0, 0, 1 } };
 
+
+
     GLuint vbo[2];
     glGenBuffers(2, vbo);
 
@@ -122,7 +124,7 @@ int main(int argc, char* argv[]) {
         if (neu::GetEngine().GetInput().GetKeyPressed(SDL_SCANCODE_ESCAPE)) quit = true;
 
         glUniform1f(uniform, neu::GetEngine().GetTime().GetTime());
-
+      
         /*
         float angle = neu::GetEngine*/
        
@@ -131,14 +133,25 @@ int main(int argc, char* argv[]) {
         //neu::GetEngine().GetRenderer().SetColor(color.r, color.g, color.b);
         neu::GetEngine().GetRenderer().Clear();
 
+
+
         glBindVertexArray(vao);
-        glDrawArrays(GL_TRIANGLES,0,(GLsizei)points.size());
+        //glDrawArrays(GL_TRIANGLES,0,(GLsizei)points.size()); //remove commments later
 
 
-       // glBegin(GL_TRIANGLES);
+       glBegin(GL_TRIANGLES);
+   
 
-        //std::vector<glm::vec3> points;
-        //std::vector<glm::vec3> colors;
+       int x;
+       for (x = 0; points.size() > x; x++) {
+           glColor3f(colors[x].r, colors[x].g, colors[x].b);
+
+           glVertex3f(points[x].x, points[x].y, points[x].z);
+       }
+
+       glEnd();
+
+      
         /*
         glColor3f(1,0,0);
         glVertex3f(-0.5f,-0.5f,0);
