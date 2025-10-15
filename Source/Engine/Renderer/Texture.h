@@ -3,6 +3,7 @@
 #include "Math/Vector2.h"
 #include <string>
 
+#include <glad/glad.h>
 struct SDL_Texture;
 
 namespace neu {
@@ -24,8 +25,7 @@ namespace neu {
 		/// <param name="filename">Path to the image file (e.g., "assets/textures/player.png")</param>
 		/// <param name="renderer">Reference to the Renderer that will manage this texture</param>
 		/// <returns>True if the texture was successfully loaded; otherwise, false</returns>
-		bool Load(const std::string& filename, class Renderer& renderer);
-
+		bool Load(const std::string& filename);
 		/// <summary>
 		/// Gets the dimensions of the texture in pixels.
 		/// </summary>
@@ -36,10 +36,8 @@ namespace neu {
 		friend class Renderer;
 
 	private:
-		// Pointer to the underlying SDL texture object stored in GPU memory
-		// Initialized to nullptr and managed throughout the texture's lifetime
-		SDL_Texture* m_texture{ nullptr };
-
+		GLuint m_texture = 0;
+		GLenum m_target = GL_TEXTURE_2D;
 		// The dimensions of the texture in pixels
 		vec2 m_size{ 0, 0 };
 	};

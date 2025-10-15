@@ -14,8 +14,8 @@
     <Filter Include="Assets\Platformer">
       <UniqueIdentifier>{0347569d-48c0-471b-8c02-8fb12964f431}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Assets\Shaders">
-      <UniqueIdentifier>{5e8fb862-2d0b-4f48-8c63-e16da2dfc618}</UniqueIdentifier>
+    <Filter Include="Assets\Textures">
+      <UniqueIdentifier>{5063e877-90dd-4dc4-8aec-7b57aa13ffe6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -46,12 +46,6 @@
     </None>
     <None Include="..\..\Build\Assets\Platformer\Tilemaps\tilemap.json">
       <Filter>Assets\Platformer</Filter>
-    </None>
-    <None Include="..\..\Build\Assets\Shaders\Basic.VERT">
-      <Filter>Assets\Shaders</Filter>
-    </None>
-    <None Include="..\..\Build\Assets\Shaders\Basic.frag">
-      <Filter>Assets\Shaders</Filter>
     </None>
   </ItemGroup>
 </Project>
