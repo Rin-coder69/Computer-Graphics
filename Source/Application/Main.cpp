@@ -104,55 +104,37 @@ int main(int argc, char* argv[]) {
 
     //vertex shader
     auto vs = neu::Resources().Get<neu::Shader>("shaders/basic.vert", GL_VERTEX_SHADER);
-
-    //fragment shader
-   /*std::string fs_source;
-    neu::file::ReadTextFile("shaders/Basic.frag", fs_source);
-    const char* fs_cstr = fs_source.c_str();
-    GLuint fs;
-    fs = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fs, 1, &fs_cstr, NULL);
-    glCompileShader(fs);
     auto fs = neu::Resources().Get<neu::Shader>("shaders/basic.frag", GL_FRAGMENT_SHADER);
-    
-    glGetShaderiv(fs, GL_COMPILE_STATUS, &success);
-    if (!success)
-    {
-        std::string infoLog(512, '\0');  // pre-allocate space
-        GLsizei length;
-        glGetShaderInfoLog(fs, (GLsizei)infoLog.size(), &length, &infoLog[0]);
-        infoLog.resize(length);
 
-        LOG_WARNING("Shader compilation failed: {}", infoLog);
-    }
-    */
 
-    //Shader program link
-    GLuint program = glCreateProgram();
-    glAttachShader(program, vs);
-    glAttachShader(program, fs);
-    glLinkProgram(program);
-    glGetProgramiv(program, GL_LINK_STATUS, &success);
-    if (!success)
-    {
-        std::string infoLog(512, '\0');  // pre-allocate space
-        GLsizei length;
-        glGetProgramInfoLog(program, (GLsizei)infoLog.size(), &length, &infoLog[0]);
-        infoLog.resize(length);
 
-        LOG_WARNING("Shader compilation failed: {}", infoLog);
-    }
-    glUseProgram(program);
+
+    auto program = std::make_shared<neu::Program>();
+    program->AttachShader(vs);
+    program->AttachShader(fs);
+    program->Link();
+    program->Use();
+
+
+    glm::mat4 model = glm::mat4(1.0f);
+    model = glm::translate(model, glm::vec3(0.5f, 0.0f, 0.0f));
+    model = glm::rotate(model, glm::radians(45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+    model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+
+
+
+
 
     //texture
     neu::res_t<neu::Texture> texture = neu::Resources().Get <neu::Texture>("textures/beast.png");
 
     //uniform
-    GLint uniform = glGetUniformLocation(program, "u_time");
+    //GLint uniform = glGetUniformLocation(program, "u_time");
     
-    GLuint tex_uniform = glGetUniformLocation(program, "u_texture");
-    glUniform1i(tex_uniform, 0);
-
+    //GLuint tex_uniform = glGetUniformLocation(program, "u_texture");
+    //glUniform1i(tex_uniform, 0);
+    program->SetUniform("u_texture", 0);
+    program->SetUniform("u_model", model);
 
         // MAIN LOOP
     while (!quit) {
@@ -167,7 +149,12 @@ int main(int argc, char* argv[]) {
 
         if (neu::GetEngine().GetInput().GetKeyPressed(SDL_SCANCODE_ESCAPE)) quit = true;
 
-        glUniform1f(uniform, neu::GetEngine().GetTime().GetTime());
+        rotation += neu::GetEngine().GetTime().GetDeltaTime() * 90;
+
+       
+
+        //glUniform1f(uniform, neu::GetEngine().GetTime().GetTime());
+        //program->Set
       
         /*
         float angle = neu::GetEngine*/
