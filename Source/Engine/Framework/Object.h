@@ -2,6 +2,7 @@
 // Object.h
 // ============================================================================
 #pragma once
+#include "Renderer/GUI.h"
 #include "Core/Serializable.h"
 #include <string>
 
@@ -77,7 +78,7 @@ namespace neu {
     /// }
     /// ```
     /// </summary>
-    class Object : public ISerializable {
+    class Object : public ISerializable, public GUI {
     public:
         /// <summary>
         /// Human-readable identifier for the object.

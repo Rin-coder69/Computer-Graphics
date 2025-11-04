@@ -8,14 +8,17 @@
     <Filter Include="Assets">
       <UniqueIdentifier>{7d2ce0eb-c054-4fe8-a9fe-1efa54b53c25}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Assets\Space">
-      <UniqueIdentifier>{9f650435-4081-4ca5-8638-b1914bf07793}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Assets\Platformer">
-      <UniqueIdentifier>{0347569d-48c0-471b-8c02-8fb12964f431}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Assets\Textures">
       <UniqueIdentifier>{5063e877-90dd-4dc4-8aec-7b57aa13ffe6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\Shaders">
+      <UniqueIdentifier>{3d4b4962-6434-484d-9d5e-0852f4e618e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\Materials">
+      <UniqueIdentifier>{e842fecb-fc01-42d0-bff2-c17cb147e14d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\Scene">
+      <UniqueIdentifier>{fc04799a-5110-4d50-a4ce-8b1501ddb384}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -32,20 +35,46 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Build\Assets\Meshes\enemy.msh">
-      <Filter>Assets\Space</Filter>
+    <None Include="..\..\Build\Assets\Shaders\Basic.frag">
+      <Filter>Assets\Shaders</Filter>
     </None>
-    <None Include="..\..\Build\Assets\scene.json">
-      <Filter>Assets\Space</Filter>
+    <None Include="..\..\Build\Assets\Shaders\Basic.VERT">
+      <Filter>Assets\Shaders</Filter>
     </None>
-    <None Include="..\..\Build\Assets\Platformer\Scenes\prototypes.json">
-      <Filter>Assets\Platformer</Filter>
+    <None Include="..\..\Build\Assets\Shaders\Basic _lit.frag">
+      <Filter>Assets\Shaders</Filter>
     </None>
-    <None Include="..\..\Build\Assets\Platformer\Scenes\level.json">
-      <Filter>Assets\Platformer</Filter>
+    <None Include="..\..\Build\Assets\Shaders\Basic _lit.VERT">
+      <Filter>Assets\Shaders</Filter>
     </None>
-    <None Include="..\..\Build\Assets\Platformer\Tilemaps\tilemap.json">
-      <Filter>Assets\Platformer</Filter>
+    <None Include="..\..\Build\Assets\Shaders\Basic_lit.PROG">
+      <Filter>Assets\Shaders</Filter>
     </None>
+    <None Include="..\..\Build\Assets\Shaders\basic_phong.frag">
+      <Filter>Assets\Shaders</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Shaders\basic_phong.vert">
+      <Filter>Assets\Shaders</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Materials\spot.mat">
+      <Filter>Assets\Materials</Filter>
+    </None>
+    <None Include="..\..\..\..\..\..\Users\nalabre\Downloads\scene01.json">
+      <Filter>Assets\Scene</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Shaders\basic_phong.prong">
+      <Filter>Assets\Shaders</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\Build\Assets\Textures\beast.png">
+      <Filter>Assets\Textures</Filter>
+    </Image>
+    <Image Include="..\..\Build\Assets\Textures\spot_diffuse.png">
+      <Filter>Assets\Textures</Filter>
+    </Image>
+    <Image Include="..\..\Build\Assets\Textures\cow.png">
+      <Filter>Assets\Textures</Filter>
+    </Image>
   </ItemGroup>
 </Project>

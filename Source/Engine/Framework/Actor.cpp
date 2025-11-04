@@ -152,6 +152,10 @@ namespace neu {
 		m_components.push_back(std::move(component));
 	}
 
+	void Actor::UpdateGUI()
+	{
+	}
+
 	/// <summary>
 	/// Deserializes actor data from configuration files.
 	/// 

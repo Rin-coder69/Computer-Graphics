@@ -60,11 +60,33 @@ namespace neu::serial
     bool Read(const value_t& value, const std::string& name, std::string& data, bool required)
     {
         if (!value.HasMember(name.c_str()) || !value[name.c_str()].IsString()) {
-            if (required) LOG_ERROR("Could not read Json value (string): {}.", name);
+            if (required) LOG_ERROR("Could not read Json value (string: {}", name);
+
+            return false;
+        }
+        data = value[name.c_str()].GetString();
+        return true;
+    }
+
+    bool Read(const value_t& value, const std::string& name, glm::vec3& data, bool required)
+    {
+        if (!value.HasMember(name.c_str()) || !value[name.c_str()].IsArray() || value[name.c_str()].Size() != 2) {
+            if (required) LOG_ERROR("Could not read Json value (vec2): {}.", name);
             return false;
         }
 
-        data = value[name.c_str()].GetString();
+        // get json array object
+        auto& array = value[name.c_str()];
+        // get array values
+        for (rapidjson::SizeType i = 0; i < array.Size(); i++) {
+            if (!array[i].IsNumber()) {
+                LOG_ERROR("Could not read Json value: {}.", name);
+                return false;
+            }
+
+            // get the data
+            data[i] = array[i].GetFloat();
+        }
 
         return true;
     }
@@ -83,7 +105,7 @@ namespace neu::serial
         return true;
     }
 
-    bool Read(const value_t& value, const std::string& name, vec2& data, bool required) {
+    bool Read(const value_t& value, const std::string& name, glm::vec2& data, bool required) {
         // check if the value has the "<name>" and is an array with 2 elements
         if (!value.HasMember(name.c_str()) || !value[name.c_str()].IsArray() || value[name.c_str()].Size() != 2) {
             if (required) LOG_ERROR("Could not read Json value (vec2): {}.", name);

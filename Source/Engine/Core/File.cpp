@@ -138,8 +138,12 @@ namespace neu::file {
     bool ReadTextFile(const std::string& path, std::string& content) {
         // Open file in text mode (default)
         std::ifstream file(path);
+        if (!std::filesystem::exists(path)) {
+            LOG_WARNING("File does not exists {}", path);
+            std::cerr << std::filesystem::absolute(path);
+        }
         if (!file.is_open()) {
-            return false; // File doesn't exist or cannot be opened
+            return false;// File doesn't exist or cannot be opened
         }
 
         // Read entire file into stringstream for efficient string building

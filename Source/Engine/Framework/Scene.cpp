@@ -55,6 +55,10 @@ namespace neu {
             });
     }
 
+    void Scene::UpdateGUI()
+    {
+    }
+
     /// <summary>
     /// Draws all actors in the scene using the specified renderer.
     /// 
@@ -250,7 +254,7 @@ namespace neu {
     void Scene::Read(const serial_data_t& value) {
         // Load base Object properties first (name, active, etc.)
         // This calls the parent class's Read() implementation
-        Object::Read(value);
+        //Object::Read(value);
 
         // SECTION 1: Process prototype definitions
         // Check if the serialized data contains a "prototypes" section

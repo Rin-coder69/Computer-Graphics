@@ -1,11 +1,9 @@
 #pragma once
 #include "Resources/Resource.h"
-#include "Math/Vector2.h"
 #include <string>
-
 #include <glm/glm.hpp>
-
 #include <glad/glad.h> 
+#include <map>
 
 namespace neu {
 	class Shader;
@@ -28,8 +26,11 @@ namespace neu {
 		void SetUniform(const std::string& name, unsigned int value);
 		void SetUniform(const std::string& name, bool value);
 
-		void SetUniform(const std::string& name, const neu::vec2& value);
-		void SetUniform(const std::string& name, const neu::vec3& value);
+		void SetUniform(const std::string& name, const glm::vec2& value);
+		void SetUniform(const std::string& name, const glm::vec3& value);
+		void SetUniform(const std::string& name, const glm::mat3& value);
+		void SetUniform(const std::string& name, const glm::mat4& value);
+		
 
 	private:
 		GLint GetUniformLocation(const std::string& name);

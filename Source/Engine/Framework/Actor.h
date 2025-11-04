@@ -151,6 +151,8 @@ namespace neu {
 			requires std::derived_from<T, Component>
 		std::vector<T*> GetComponents();
 
+		void UpdateGUI() override;
+
 	protected:
 		// Container for all components attached to this actor
 		// Uses unique_ptr for automatic memory management
