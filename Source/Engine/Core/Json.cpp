@@ -70,7 +70,7 @@ namespace neu::serial
 
     bool Read(const value_t& value, const std::string& name, glm::vec3& data, bool required)
     {
-        if (!value.HasMember(name.c_str()) || !value[name.c_str()].IsArray() || value[name.c_str()].Size() != 2) {
+        if (!value.HasMember(name.c_str()) || !value[name.c_str()].IsArray() || value[name.c_str()].Size() != 3) {
             if (required) LOG_ERROR("Could not read Json value (vec2): {}.", name);
             return false;
         }

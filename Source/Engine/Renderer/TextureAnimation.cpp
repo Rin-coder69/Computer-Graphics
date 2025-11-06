@@ -47,11 +47,7 @@ namespace neu {
 		return true;
 	}
 
-	/// <summary>
-	/// Calculates the size of a single animation frame.
-	/// Divides the total texture size by the grid dimensions to get individual frame size.
-	/// </summary>
-	/// <returns>A vec2 containing the frame width and height in pixels</returns>
+	
 	vec2 TextureAnimation::GetSize() const {
 		vec2 size = m_texture->GetSize();
 
@@ -59,13 +55,7 @@ namespace neu {
 		return { size.x / m_columns, size.y / m_rows };
 	}
 
-	/// <summary>
-	/// Calculates the rectangle coordinates for a specific frame in the sprite sheet.
-	/// Frames are indexed left-to-right, top-to-bottom in the grid.
-	/// The calculation accounts for the start_frame offset to support multi-animation sheets.
-	/// </summary>
-	/// <param name="frame">The frame index (0-based) within the animation sequence</param>
-	/// <returns>A rect defining the position and size of the frame in the texture</returns>
+	
 	rect TextureAnimation::GetFrameRect(int frame) const
 	{
 		// Validate frame index and default to frame 0 if out of bounds

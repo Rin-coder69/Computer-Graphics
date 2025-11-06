@@ -212,15 +212,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\..\..\..\Users\nalabre\Downloads\scene01.json" />
     <None Include="..\..\Build\Assets\Materials\spot.mat" />
-    <None Include="..\..\Build\Assets\Shaders\Basic _lit.frag" />
-    <None Include="..\..\Build\Assets\Shaders\Basic _lit.VERT" />
-    <None Include="..\..\Build\Assets\Shaders\Basic.frag" />
-    <None Include="..\..\Build\Assets\Shaders\Basic.VERT" />
-    <None Include="..\..\Build\Assets\Shaders\Basic_lit.PROG" />
+    <None Include="..\..\Build\Assets\Scenes\scene01.json" />
+    <None Include="..\..\Build\Assets\Shaders\basic_lit.frag" />
+    <None Include="..\..\Build\Assets\Shaders\basic_lit.vert" />
+    <None Include="..\..\Build\Assets\Shaders\basic.frag" />
+    <None Include="..\..\Build\Assets\Shaders\basic.vert" />
+    <None Include="..\..\Build\Assets\Shaders\basic_lit.prog" />
     <None Include="..\..\Build\Assets\Shaders\basic_phong.frag" />
-    <None Include="..\..\Build\Assets\Shaders\basic_phong.prong" />
+    <None Include="..\..\Build\Assets\Shaders\basic_phong.prog" />
     <None Include="..\..\Build\Assets\Shaders\basic_phong.vert" />
   </ItemGroup>
   <ItemGroup>

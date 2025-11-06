@@ -15,6 +15,8 @@ int main(int argc, char* argv[]) {
     // MAIN LOOP
     SDL_Event e;
     bool quit = false;
+	//auto editor = std::make_unique<neu::Editor>(); where to find editor
+
     while (!quit) {
         while (SDL_PollEvent(&e)) {
             if (e.type == SDL_EVENT_QUIT) {
@@ -28,6 +30,7 @@ int main(int argc, char* argv[]) {
 
         if (neu::GetEngine().GetInput().GetKeyPressed(SDL_SCANCODE_ESCAPE)) quit = true;
    
+		scene->Update(dt);
         // draw
         neu::GetEngine().GetRenderer().Clear();
 
@@ -42,11 +45,11 @@ int main(int argc, char* argv[]) {
         ImGui::Text("Press 'ESC' to quit");
         ImGui::End();
 
+		scene->Draw(neu::GetEngine().GetRenderer());
         //draw ImGui
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-        scene->Draw(neu::GetEngine().GetRenderer());
         neu::GetEngine().GetRenderer().Present();
     }
 

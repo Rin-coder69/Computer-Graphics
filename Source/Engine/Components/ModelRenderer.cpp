@@ -10,6 +10,7 @@ namespace neu {
 	void ModelRenderer::Draw(Renderer& renderer)
 	{
 		material->Bind();
+		//material->program->SetUniform("test", 5);
 		material->program->SetUniform("u_model", owner->transform.GetMatrix());
 		model->Draw(GL_TRIANGLES);
 	}

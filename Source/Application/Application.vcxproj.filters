@@ -35,19 +35,19 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Build\Assets\Shaders\Basic.frag">
+    <None Include="..\..\Build\Assets\Shaders\basic.frag">
       <Filter>Assets\Shaders</Filter>
     </None>
-    <None Include="..\..\Build\Assets\Shaders\Basic.VERT">
+    <None Include="..\..\Build\Assets\Shaders\basic.vert">
       <Filter>Assets\Shaders</Filter>
     </None>
-    <None Include="..\..\Build\Assets\Shaders\Basic _lit.frag">
+    <None Include="..\..\Build\Assets\Shaders\basic_lit.frag">
       <Filter>Assets\Shaders</Filter>
     </None>
-    <None Include="..\..\Build\Assets\Shaders\Basic _lit.VERT">
+    <None Include="..\..\Build\Assets\Shaders\basic_lit.vert">
       <Filter>Assets\Shaders</Filter>
     </None>
-    <None Include="..\..\Build\Assets\Shaders\Basic_lit.PROG">
+    <None Include="..\..\Build\Assets\Shaders\basic_lit.prog">
       <Filter>Assets\Shaders</Filter>
     </None>
     <None Include="..\..\Build\Assets\Shaders\basic_phong.frag">
@@ -59,11 +59,11 @@
     <None Include="..\..\Build\Assets\Materials\spot.mat">
       <Filter>Assets\Materials</Filter>
     </None>
-    <None Include="..\..\..\..\..\..\Users\nalabre\Downloads\scene01.json">
-      <Filter>Assets\Scene</Filter>
-    </None>
-    <None Include="..\..\Build\Assets\Shaders\basic_phong.prong">
+    <None Include="..\..\Build\Assets\Shaders\basic_phong.prog">
       <Filter>Assets\Shaders</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Scenes\scene01.json">
+      <Filter>Assets\Scene</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
