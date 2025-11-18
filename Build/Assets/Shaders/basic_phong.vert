@@ -22,18 +22,20 @@ uniform struct Light
 	vec3 color;
 } u_light;
 
- struct Material
+struct Material
 {
-	sampler2D baseMap;
 	vec3 baseColor;
-
+	vec3 emissiveColor;
 	float shininess;
 	vec2 tiling;
 	vec2 offset;
+	uint parameters;
 };
 
-
 uniform Material u_material;
+uniform mat4 model;
+uniform mat4 view;
+uniform mat4 projection;
 
 
 void main()

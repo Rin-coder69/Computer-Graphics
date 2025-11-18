@@ -1,0 +1,4 @@
+{
+	"program": "shaders/refraction.prog",
+	"cubeMap": "textures/SkyBox/posx.jpg textures/SkyBox/negx.jpg textures/SkyBox/posy.jpg textures/SkyBox/negy.jpg textures/SkyBox/posz.jpg textures/SkyBox/negz.jpg"
+}

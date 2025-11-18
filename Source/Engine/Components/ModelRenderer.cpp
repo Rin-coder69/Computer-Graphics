@@ -12,7 +12,14 @@ namespace neu {
 		material->Bind();
 		//material->program->SetUniform("test", 5);
 		material->program->SetUniform("u_model", owner->transform.GetMatrix());
+
+		glDepthMask(enableDepth);
+		glCullFace(cullFace);
 		model->Draw(GL_TRIANGLES);
+
+		if (model) {
+			model->Draw(GL_TRIANGLES);
+		}
 	}
 
 	void ModelRenderer::Read(const serial_data_t& value)
@@ -28,12 +35,27 @@ namespace neu {
 		SERIAL_READ_NAME(value, "material", materialName);
 
 		material = Resources().Get<Material>(materialName);
+
+		SERIAL_READ(value, enableDepth);
+
 	}
 
 	void ModelRenderer::UpdateGUI()
 	{
+		std::string text;
+
+		text = (model) ? model->name : "none";
+		
+			ImGui::Text("Model: %s", text.c_str());
+			Editor::GetDialogResource<Model>(model, "ModelDialog", "Open Model", "Model(*.obj;*.fbx;*.dae; *.3ds; *.glb){.obj, .fbx, .dae, .3ds, .glb},.*");
+		
+		
+			text = (material) ? material->name : "none";
+			ImGui::Text("Material: %s", text.c_str());
+			Editor::GetDialogResource<Material>(material, "MaterialDialog", "Open Material", "Material(*.mat){.mat},.*");
+		
+
+
+
 	}
-
-
-
 }

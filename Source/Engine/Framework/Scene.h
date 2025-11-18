@@ -284,6 +284,7 @@ namespace neu {
         std::vector<T*> GetActorsByTag(const std::string& tag);
 
     private:
+        friend class Editor;
 
         /// <summary>
         /// Container for all actors in the scene.

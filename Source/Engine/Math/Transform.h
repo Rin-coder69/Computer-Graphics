@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "Renderer/GUI.h"
+#include "GUI/GUI.h"
 #include "Core/Serializable.h"
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>

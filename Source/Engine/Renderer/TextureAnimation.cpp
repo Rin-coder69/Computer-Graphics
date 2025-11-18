@@ -47,12 +47,16 @@ namespace neu {
 		return true;
 	}
 
+	void TextureAnimation::UpdateGUI()
+	{
+	}
+
 	
-	vec2 TextureAnimation::GetSize() const {
-		vec2 size = m_texture->GetSize();
+	glm::vec2 TextureAnimation::GetSize() const {
+		auto  size = m_texture->GetSize();
 
 		// Calculate frame size by dividing texture dimensions by grid layout
-		return { size.x / m_columns, size.y / m_rows };
+		return { size.x / (float)m_columns, size.y / (float)m_rows };
 	}
 
 	
@@ -65,7 +69,7 @@ namespace neu {
 		}
 
 		rect frameRect;
-		vec2 size = GetSize();
+		auto size = GetSize();
 
 		// Set frame dimensions
 		frameRect.w = size.x;

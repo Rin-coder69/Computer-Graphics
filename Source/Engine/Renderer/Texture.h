@@ -26,6 +26,7 @@ namespace neu {
 		/// <param name="renderer">Reference to the Renderer that will manage this texture</param>
 		/// <returns>True if the texture was successfully loaded; otherwise, false</returns>
 		bool Load(const std::string& filename);
+		void UpdateGUI() override;
 
 		void SetActive(GLuint unit) { glActiveTexture(unit); }
 		void Bind() { glBindTexture(m_target, m_texture); }
@@ -33,15 +34,15 @@ namespace neu {
 		/// Gets the dimensions of the texture in pixels.
 		/// </summary>
 		/// <returns>A vec2 containing the width and height of the texture</returns>
-		vec2 GetSize() { return m_size;  }
+		glm::ivec2 GetSize() { return m_size;  }
 
 		// Allow Renderer class to access the texture for drawing operations
 		friend class Renderer;
 
-	private:
+	public:
 		GLuint m_texture = 0;
 		GLenum m_target = GL_TEXTURE_2D;
 		// The dimensions of the texture in pixels
-		vec2 m_size{ 0, 0 };
+		glm::ivec2 m_size{ 0, 0 };
 	};
 }

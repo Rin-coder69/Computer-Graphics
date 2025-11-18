@@ -1,0 +1,9 @@
+{
+	"program": "shaders/lit_phong.prog",
+	"baseMap": "textures/rocks_base.jpg",
+	"baseColor": [ 1, 1, 1 ],
+	"normalMap": "textures/rocks_normal.jpg",
+	"shininess": 128,
+	"tiling": [ 20, 20 ],
+	"offset": [ 0.1, 0 ]
+}

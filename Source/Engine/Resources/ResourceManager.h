@@ -65,6 +65,17 @@ namespace neu {
             requires std::derived_from<T, Resource>
         res_t<T> GetWithID(const std::string& id, const std::string& name, Args&& ... args);
 
+
+        template<typename T = Resource>
+			requires std::derived_from<T, Resource>
+        std::vector<T*> GetByType();
+
+        template<typename T = Resource>
+        requires std::derived_from<T, Resource>
+        bool AddResource(const std::string& name, const res_t<T>&texture);
+
+
+
     private:
         /// <summary>
         /// Friend declaration to allow Singleton base class access to private constructor
@@ -139,10 +150,49 @@ namespace neu {
 
         // Successfully loaded - add to cache for future use
         // Store as base Resource pointer for type erasure
+		resource->name = key;
         m_resources[key] = resource;
 
         return resource;
     }
+
+    template<typename T>
+        requires std::derived_from<T, Resource>
+    inline std::vector<T*> ResourceManager::GetByType()
+    {
+        std::vector<T*> results;
+
+        for (auto& resource : m_resources) {
+            auto result = dynamic_cast<T*>(resource.second.get());
+            if (result) {
+                results.push_back(result);
+            }
+        }
+
+        return results;
+    }
+
+
+
+
+
+    template<typename T>
+        requires std::derived_from<T, Resource>
+    inline bool ResourceManager::AddResource(const std::string& name, const res_t<T>& resource) {
+        std::string key = toLower(name);
+
+
+        std::vector<T*> results;
+
+        auto iter = m_resources.find(key);
+        if (iter != m_resources.end()) {
+            LOG_WARNING("Resources already exist{}", key);
+            return false;
+        }
+        resource->name = key;
+        m_resources[key] = resource;
+    }
+
 
     /// <summary>
     /// Global convenience function for accessing the ResourceManager singleton.

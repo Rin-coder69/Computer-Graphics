@@ -1,4 +1,5 @@
 #pragma once
+#include <EngineMinimal.h>
 
 namespace neu {
 	class Texture;
@@ -23,13 +24,13 @@ namespace neu {
 		/// <param name="renderer">Reference to the Renderer used to load the texture</param>
 		/// <returns>True if the animation was successfully loaded; otherwise, false</returns>
 		bool Load(const std::string& filename, class Renderer& renderer);
-
+		void UpdateGUI() override;
 		/// <summary>
 		/// Gets the size of a single animation frame in pixels.
 		/// Calculated by dividing the texture size by the number of columns and rows.
 		/// </summary>
 		/// <returns>A vec2 containing the frame width (x) and height (y)</returns>
-		vec2 GetSize() const;
+		glm::vec2 GetSize() const;
 
 		/// <summary>
 		/// Gets the rectangle (UV coordinates) for a specific frame in the sprite sheet.

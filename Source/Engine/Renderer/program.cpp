@@ -15,6 +15,10 @@ namespace neu {
 		glAttachShader(m_program, shader->m_shader);
 	}
 
+	void Program::UpdateGUI()
+	{
+	}
+
 	bool Program::Load(const std::string& filename) {
 	// load program document
 	serial::document_t document;

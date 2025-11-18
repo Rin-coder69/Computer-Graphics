@@ -1,57 +1,113 @@
 {
-	"actors": [
-		{
-			"name": "cow",
-			"persistent": true,
-			"transform": {
-				"position": [ 0, 0, 0 ],
-				"rotation": [ 0, 180, 0 ],
-				"scale": [ 1, 1, 1 ]
-			},
-			"components": [
-				{
-					"type": "ModelRenderer",
-					"model": "models/cow.obj",
-					"material": "materials/spot.mat"
-				}
-			]
-		},
-		{
-			"name": "camera",
-			"persistent": true,
-			"transform": {
-				"position": [ 0, 0, 10 ],
-				"rotation": [ 0, 0, 0 ],
-				"scale": [ 1, 1, 1 ]
-			},
-			"components": [
-				{
-					"type": "CameraComponent"
-				},
-				{
-					"type": "FirstPersonController",
-					"speed": 5,
-					"sensitivity": 0.2
-				}
-			]
-		},
-		{
-			"name": "light",
-			"persistent": true,
-			"transform": {
-				"position": [ 0, 5, 0 ],
-				"rotation": [ 90, 0, 0 ],
-				"scale": [ 1, 1, 1 ]
-			},
-			"components": [
-				{
-					"type": "LightComponent",
-					"color": [ 0, 1, 0 ],
-					"intensity": 2,
-					"lightType": "Directional"
+  "actors": [
+    {
+      "name": "box",
+      "persistent": true,
+      "transform": {
+        "position": [ 0, 0, 0 ],
+        "rotation": [ 0, 180, 0 ],
+        "scale": [ 1, 1, 1 ]
+      },
+      "components": [
+        {
+          "type": "ModelRenderer",
+          "model": "models/cube.obj",
+          "material": "materials/crate.mat",
+          "enableDepthTest": false,
+          "castShadows": true
+        }
+      ]
+    },
+    {
+      "name": "floor",
+      "active": true,
+      "persistent": true,
+      "transform": {
+        "position": [ 0, -1, 0 ],
+        "rotation": [ 0, 0, 0 ],
+        "scale": [ 1, 1, 1 ]
+      },
+      "components": [
+        {
+          "type": "ModelRenderer",
+          "model": "models/plane.obj",
+          "material": "materials/floor.mat"
+        }
+      ]
+    },
+    {
+      "name": "camera",
+      "persistent": true,
+      "transform": {
+        "position": [ 0, 0, 5 ],
+        "rotation": [ 0, 0, 0 ],
+        "scale": [ 1, 1, 1 ]
+      },
+      "components": [
+        {
+          "type": "CameraComponent"
+        },
+        {
+          "type": "FirstPersonController",
+          "speed": 5,
+          "sensitivity": 0.2
+        }
+      ]
+    },
+    {
+      "name": "light",
+      "persistent": true,
+      "transform": {
+        "position": [ 5, 5, 0 ],
+        "rotation": [ 0, 0, 0 ],
+        "scale": [ 1, 1, 1 ]
+      },
+      "components": [
+        {
+          "type": "LightComponent",
+          "color": [ 1, 1, 0 ],
+          "intensity": [ 1 ],
+          "range": [ 20 ]
+        }
+      ]
+    },
+    {
+      "name": "light2",
+      "persistent": true,
+      "transform": {
+        "position": [ 3, 5, 0 ],
+        "rotation": [ 0, 0, 0 ],
+        "scale": [ 1, 1, 1 ]
+      },
+      "components": [
+        {
+          "type": "LightComponent",
+          "color": [ 1, 1, 1 ],
+          "intensity": [ 1 ],
+          "range": [ 20 ]
+        }
+      ]
+    },
+    {
+      "name": "light3",
+      "persistent": true,
+      "transform": {
+        "position": [ 0, 5, 0 ],
+        "rotation": [ 0, 90, 0 ],
+        "scale": [ 1, 1, 1 ]
+      },
+      "components": [
+        {
+          "type": "LightComponent",
+          "color": [ 1, 0, 0 ],
+          "intensity": [ 1 ],
+          "range": [ 20 ],
+          "lightType": "spot",
+          "innerSpotAngle": 4,
+          "outerSpotAngle": 10
+        }
+      ]
+    }
 
-				}
-			]
-		}
-	]
+  ]
 }

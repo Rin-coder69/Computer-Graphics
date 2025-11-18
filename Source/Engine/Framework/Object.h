@@ -2,7 +2,7 @@
 // Object.h
 // ============================================================================
 #pragma once
-#include "Renderer/GUI.h"
+#include "GUI/GUI.h"
 #include "Core/Serializable.h"
 #include <string>
 

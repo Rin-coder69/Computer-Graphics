@@ -152,8 +152,20 @@ namespace neu {
 		m_components.push_back(std::move(component));
 	}
 
-	void Actor::UpdateGUI()
-	{
+	void Actor::UpdateGUI() {
+		ImGui::Text("Name: %s", name.c_str());
+		ImGui::Text("Tag: %s", tag.c_str());
+		ImGui::Checkbox("Active", &active);
+		// transform information
+		ImGui::Separator();
+		transform.UpdateGUI();
+
+		// components information
+		for (auto& component : m_components)
+		{
+			ImGui::Separator();
+			component->UpdateGUI();
+		}
 	}
 
 	/// <summary>

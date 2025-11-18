@@ -24,6 +24,10 @@ namespace neu {
         }
     }
 
+    void Model::UpdateGUI()
+    {
+    }
+
     void Model::ProcessNode(aiNode* node, const aiScene* scene) {
         // process the current node meshes
         for (unsigned int i = 0; i < node->mNumMeshes; i++) {

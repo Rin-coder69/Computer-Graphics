@@ -9,12 +9,18 @@ int main(int argc, char* argv[]) {
 
     // initialize scene
     auto scene = std::make_shared <neu::Scene>();
-    scene->Load("Scenes/scene01.json");
+    scene->Load("Scenes/scene03.json");
     scene->Start();
+
+	auto editor = std::make_unique<neu::Editor>();
 
     // MAIN LOOP
     SDL_Event e;
     bool quit = false;
+
+    auto renderTexture = std::make_shared<neu::RenderTexture>();
+    renderTexture->Create(512, 512);
+    neu::Resources().AddResource("renderTexture", renderTexture);
 	//auto editor = std::make_unique<neu::Editor>(); where to find editor
 
     while (!quit) {
@@ -22,7 +28,10 @@ int main(int argc, char* argv[]) {
             if (e.type == SDL_EVENT_QUIT) {
                 quit = true;
             }
+            ImGui_ImplSDL3_ProcessEvent(&e);
         }
+        //editor code here
+        
 
         // update
         neu::GetEngine().Update();
@@ -31,22 +40,15 @@ int main(int argc, char* argv[]) {
         if (neu::GetEngine().GetInput().GetKeyPressed(SDL_SCANCODE_ESCAPE)) quit = true;
    
 		scene->Update(dt);
+
+		editor->Begin();
+		editor->UpdateGUI(*scene);
+
         // draw
         neu::GetEngine().GetRenderer().Clear();
-
-        //Start new new imgui frame
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplSDL3_NewFrame();
-        ImGui::NewFrame();
-
-        //set ImGui
-        ImGui::Begin("Editor");
-        ImGui::Text("Hello World");
-        ImGui::Text("Press 'ESC' to quit");
-        ImGui::End();
-
 		scene->Draw(neu::GetEngine().GetRenderer());
         //draw ImGui
+
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 

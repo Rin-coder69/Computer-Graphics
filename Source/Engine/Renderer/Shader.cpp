@@ -32,4 +32,7 @@ namespace neu {
 
 		return true;
 	}
+	void Shader::UpdateGUI()
+	{
+	}
 }

@@ -1,6 +1,6 @@
 #pragma once
 #include <glm/glm.hpp>
-#include "GUI.h"
+#include "GUI/GUI.h"
 
 namespace neu {
 	class Program;
@@ -8,6 +8,14 @@ namespace neu {
 
 	class Material : public Resource, GUI {
 	public:
+		enum class Parameters : uint32_t{
+			None = 0,
+			BaseMap = (1 << 0),
+			SpecularMap = (1 << 1),
+			EmissiveMap = (1 << 2),
+			NormalMap = (1 << 3),
+			CubeMap = (1 << 4),
+		};
 		Material() = default;
 		~Material() = default;
 
@@ -17,15 +25,25 @@ namespace neu {
 		void UpdateGUI() override;
 
 	public:
+		 
 		float shininess{ 2 };
 		glm::vec2 tiling{ 1,1 };
 		glm::vec2 offset{ 0,0 };
 		glm::vec3 baseColor{ 0,0,0 };
+		glm::vec3 emissiveColor{ 0,0,0 };
+
+		float ior{ 1.1f };
+		Parameters parameters = Parameters::None;
 
 		res_t <Program> program;
 		res_t <Texture> baseMap;
+		res_t <Texture> emissiveMap;
 		res_t <Texture> specularMap;
-
+		res_t <Texture> normalMap;
+		res_t <Texture> cubeMap;
+		//rest_t<Texture> emissiveMap;
+		//rest_t<Texture> specularMap;
+		//glm::vec3 emissiveColor{ 1,1,1};
 
 	};
 

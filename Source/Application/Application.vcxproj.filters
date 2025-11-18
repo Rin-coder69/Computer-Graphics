@@ -8,9 +8,6 @@
     <Filter Include="Assets">
       <UniqueIdentifier>{7d2ce0eb-c054-4fe8-a9fe-1efa54b53c25}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Assets\Textures">
-      <UniqueIdentifier>{5063e877-90dd-4dc4-8aec-7b57aa13ffe6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Assets\Shaders">
       <UniqueIdentifier>{3d4b4962-6434-484d-9d5e-0852f4e618e1}</UniqueIdentifier>
     </Filter>
@@ -19,6 +16,9 @@
     </Filter>
     <Filter Include="Assets\Scene">
       <UniqueIdentifier>{fc04799a-5110-4d50-a4ce-8b1501ddb384}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\Materials\Textures">
+      <UniqueIdentifier>{5063e877-90dd-4dc4-8aec-7b57aa13ffe6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -65,16 +65,97 @@
     <None Include="..\..\Build\Assets\Scenes\scene01.json">
       <Filter>Assets\Scene</Filter>
     </None>
+    <None Include="..\..\Build\Assets\Materials\crate.mat">
+      <Filter>Assets\Materials</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Scenes\scene02.json">
+      <Filter>Assets\Scene</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Materials\halloween.mat">
+      <Filter>Assets\Materials</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Materials\floor.mat">
+      <Filter>Assets\Materials</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Shaders\skybox.vert">
+      <Filter>Assets\Shaders</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Shaders\skybox.frag">
+      <Filter>Assets\Shaders</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Shaders\Refraction.prog">
+      <Filter>Assets\Shaders</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Shaders\Reflection.vert">
+      <Filter>Assets\Shaders</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Shaders\Refraction.vert">
+      <Filter>Assets\Shaders</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Shaders\Reflection.prog">
+      <Filter>Assets\Shaders</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Materials\SkyBox.mat">
+      <Filter>Assets\Materials</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Materials\Refraction.mat">
+      <Filter>Assets\Materials</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Materials\Reflection.mat">
+      <Filter>Assets\Materials</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Scenes\scene03.json">
+      <Filter>Assets\Scene</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Materials\rock.mat">
+      <Filter>Assets\Materials</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Shaders\cubemap.frag">
+      <Filter>Assets\Shaders</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Shaders\skybox.prog">
+      <Filter>Assets\Shaders</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Materials\rtt.mat">
+      <Filter>Assets\Materials</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Materials\squirrel.mat">
+      <Filter>Assets\Materials</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Materials\ogre.mat">
+      <Filter>Assets\Materials</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Shaders\unlit.prog">
+      <Filter>Assets\Shaders</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Shaders\unlit.vert">
+      <Filter>Assets\Shaders</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Shaders\unlit.frag">
+      <Filter>Assets\Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\Build\Assets\Textures\beast.png">
-      <Filter>Assets\Textures</Filter>
+      <Filter>Assets\Materials\Textures</Filter>
     </Image>
     <Image Include="..\..\Build\Assets\Textures\spot_diffuse.png">
-      <Filter>Assets\Textures</Filter>
+      <Filter>Assets\Materials\Textures</Filter>
     </Image>
     <Image Include="..\..\Build\Assets\Textures\cow.png">
-      <Filter>Assets\Textures</Filter>
+      <Filter>Assets\Materials\Textures</Filter>
+    </Image>
+    <Image Include="..\..\Build\Assets\Textures\space_crate_base.png">
+      <Filter>Assets\Materials\Textures</Filter>
+    </Image>
+    <Image Include="..\..\Build\Assets\Textures\space_crate_normal.png">
+      <Filter>Assets\Materials\Textures</Filter>
+    </Image>
+    <Image Include="..\..\Build\Assets\Textures\space_crate_specular.png">
+      <Filter>Assets\Materials\Textures</Filter>
+    </Image>
+    <Image Include="..\..\Build\Assets\Textures\space_crate_emissive.png">
+      <Filter>Assets\Materials\Textures</Filter>
     </Image>
   </ItemGroup>
 </Project>

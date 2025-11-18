@@ -46,13 +46,28 @@
 #include "Renderer/VertexBuffer.h"
 #include "Renderer/Texture.h"
 #include "Renderer/TextureAnimation.h"
+#include "Renderer/RenderTexture.h"
+#include "Renderer/CubeMap.h"
 #include "Renderer/Shader.h"
 #include "Renderer/Program.h"
 #include "Renderer/Model.h"
 #include "Renderer/Material.h"
 
+//compoenets
+#include "components/CameraComponent.h"
+#include "Components/FirstPersonController.h"
+#include "Components/LightComponent.h"
+#include "Components/ModelRenderer.h"
+#include "Components/RendererComponent.h"
+#include "Components/RotationComponent.h"
+
+
 // physics
 #include "Physics/Collidable.h"
+
+// editor / gui
+#include "GUI/GUI.h"
+#include "GUI/Editor.h"
 
 // third-party library
 #include <fmod.hpp>

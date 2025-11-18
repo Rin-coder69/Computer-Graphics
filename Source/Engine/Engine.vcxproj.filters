@@ -39,6 +39,9 @@
     <Filter Include="Source\Physics">
       <UniqueIdentifier>{9ba8352a-461e-4a3f-a351-7ae28744a574}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\GUI">
+      <UniqueIdentifier>{4d60dec1-0765-4a7c-913b-d2ebe4b30602}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -142,6 +145,21 @@
     </ClCompile>
     <ClCompile Include="Components\FirstPersonController.cpp">
       <Filter>Source\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\Editor.cpp">
+      <Filter>Source\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\CubeMap.cpp">
+      <Filter>Source\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\RotationComponent.cpp">
+      <Filter>Source\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ThirdParty\imgui\ImGuiFileDialog.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\RenderTexture.cpp">
+      <Filter>Source\Renderer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -274,9 +292,6 @@
     <ClInclude Include="Components\CameraComponent.h">
       <Filter>Source\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\GUI.h">
-      <Filter>Source\Renderer</Filter>
-    </ClInclude>
     <ClInclude Include="Renderer\Material.h">
       <Filter>Source\Renderer</Filter>
     </ClInclude>
@@ -285,6 +300,21 @@
     </ClInclude>
     <ClInclude Include="Components\FirstPersonController.h">
       <Filter>Source\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI\GUI.h">
+      <Filter>Source\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI\Editor.h">
+      <Filter>Source\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\CubeMap.h">
+      <Filter>Source\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\RotationComponent.h">
+      <Filter>Source\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\RenderTexture.h">
+      <Filter>Source\Renderer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
