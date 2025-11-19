@@ -223,6 +223,7 @@
     <None Include="..\..\Build\Assets\Materials\SkyBox.mat" />
     <None Include="..\..\Build\Assets\Materials\spot.mat" />
     <None Include="..\..\Build\Assets\Materials\squirrel.mat" />
+    <None Include="..\..\Build\Assets\Materials\test.mat" />
     <None Include="..\..\Build\Assets\Scenes\scene01.json" />
     <None Include="..\..\Build\Assets\Scenes\scene02.json" />
     <None Include="..\..\Build\Assets\Scenes\scene03.json" />
@@ -249,6 +250,12 @@
   <ItemGroup>
     <Image Include="..\..\Build\Assets\Textures\beast.png" />
     <Image Include="..\..\Build\Assets\Textures\cow.png" />
+    <Image Include="..\..\Build\Assets\Textures\honse\eyesbump1.png" />
+    <Image Include="..\..\Build\Assets\Textures\honse\tex_bdy1062_00_diff.png" />
+    <Image Include="..\..\Build\Assets\Textures\honse\tex_chr1062_00_eye0.png" />
+    <Image Include="..\..\Build\Assets\Textures\honse\tex_chr1062_00_face_diff.png" />
+    <Image Include="..\..\Build\Assets\Textures\honse\tex_chr1062_00_hair_diff.png" />
+    <Image Include="..\..\Build\Assets\Textures\honse\tex_tail0001_00_1062_diff.png" />
     <Image Include="..\..\Build\Assets\Textures\space_crate_base.png" />
     <Image Include="..\..\Build\Assets\Textures\space_crate_emissive.png" />
     <Image Include="..\..\Build\Assets\Textures\space_crate_normal.png" />

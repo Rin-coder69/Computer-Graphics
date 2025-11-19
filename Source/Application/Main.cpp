@@ -45,7 +45,7 @@ int main(int argc, char* argv[]) {
 		editor->UpdateGUI(*scene);
 
         // draw
-        neu::GetEngine().GetRenderer().Clear();
+       
 		scene->Draw(neu::GetEngine().GetRenderer());
         //draw ImGui
 

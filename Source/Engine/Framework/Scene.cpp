@@ -87,40 +87,17 @@ namespace neu {
     /// <param name="renderer">The renderer used to draw the actors.</param>
     void Scene::Draw(Renderer& renderer) {
 
-        //light
-        std::vector<LightComponent*> lights;
+        auto lights = GetActorComponents<LightComponent>();
+        auto cameras = GetActorComponents<CameraComponent>();
 
-        for (auto& actor : m_actors)
+        if (cameras.empty())
         {
-            if (!actor->active) continue;
-
-            auto light = actor->GetComponent<LightComponent>();
-            if (light && light->active) {
-                lights.push_back(light);
-            }
-        }
-
-        //camera
-        CameraComponent* camera = nullptr;
-
-        for (auto& actor : m_actors)
-        {
-            if (!actor->active) continue;
-
-            auto comp = actor->GetComponent<CameraComponent>();
-            if (comp && comp->active) {
-                camera = comp;
-                break;
-            }
-        }
-
-        if (!camera) {
             LOG_WARNING("No active camera was found in scene.");
             return;
         }
 
         // get programs
-        std::set<Program*> programs;
+        std::set<Program*> programSet;
 
         for (auto& actor : m_actors) {
             auto model = actor->GetComponent<ModelRenderer>();
@@ -129,241 +106,270 @@ namespace neu {
                 continue;
             }
             if (model->material && model->material->program) {
-                programs.insert(model->material->program.get());
+                programSet.insert(model->material->program.get());
             }
         }
+        std::vector<Program*> programs(programSet.begin(), programSet.end());
 
-        for (auto& program : programs) {
-            program->Use();
-            program->SetUniform("u_ambient_light", m_ambientLight);
-            program->SetUniform("u_numLights", (int)(lights.size()));
-            camera->SetProgram(*program);
-
-            //light set
-
-            int index = 0;
-            for (auto light : lights) {
-                std::string lightName = "u_lights[" + std::to_string(index++) + "]";
-                light->SetProgram(*program, lightName, camera->view);
-
+        for (auto& camera : cameras) {
+            if (camera->outputTexture) {
+                camera->outputTexture->BindFramebuffer();
+                glViewport(0, 0, camera->outputTexture->m_size.x, camera->outputTexture->m_size.y);
             }
-        }
-
-        // Iterate through all actors in the scene
-        for (auto& actor : m_actors) {
-            // Only render actors that are marked as active
-            // This parallels the Update() logic for consistency
-            if (actor->active) {
-                // Pass the renderer to each actor
-                // Each actor is responsible for its own drawing implementation
-                actor->Draw(renderer);
+            camera->Clear();
+            DrawPass(renderer, programs, lights, camera);
+            if (camera->outputTexture) {
+                camera->outputTexture->UnbindFramebuffer();
+                glViewport(0, 0, renderer.GetWidth(), renderer.GetHeight());
             }
         }
     }
 
-    /// <summary>
-    /// Adds an actor to the scene by transferring ownership of the actor.
-    /// 
-    /// This method incorporates a new actor into the scene, setting up the
-    /// bidirectional relationship between the actor and scene, and optionally
-    /// initializing the actor immediately.
-    /// 
-    /// Integration process:
-    /// 1. Set the actor's scene pointer to establish parent relationship
-    /// 2. Optionally call Start() to initialize the actor
-    /// 3. Transfer ownership to the scene's actor container
-    /// 
-    /// The scene pointer enables actors to access scene-wide functionality
-    /// and query other actors. The start parameter allows for batch actor
-    /// addition without immediate initialization (useful during scene loading).
-    /// </summary>
-    /// <param name="actor">A unique pointer to the actor to be added. Ownership of the actor is transferred to the scene.</param>
-    /// <param name="start">Whether to immediately call Start() on the actor for initialization</param>
-    void Scene::AddActor(std::unique_ptr<Actor> actor, bool start) {
-        // Validate that we're not trying to add a null pointer
-        // ASSERT_MSG will help catch bugs during development
-        ASSERT_MSG(actor, "Attempted to add null actor to scene");
+        void Scene::DrawPass(Renderer & renderer,
+            std::vector<Program*>&programs,
+            std::vector<LightComponent*>&lights,
+            CameraComponent * camera)
+        {
 
-        // Establish back-reference from actor to scene
-        // This allows actors to query the scene, find other actors, etc.
-        actor->scene = this;
+            for (auto& program : programs) {
+                program->Use();
+                program->SetUniform("u_ambient_light", m_ambientLight);
+                program->SetUniform("u_numLights", (int)(lights.size()));
+                camera->SetProgram(*program);
 
-        // Optionally initialize the actor immediately
-        // During batch loading, we skip Start() and call it later for all actors
-        if (start) actor->Start();
 
-        // Transfer ownership to the scene's container
-        // std::move is required to transfer unique_ptr ownership
-        // push_back adds to the end of the list
-        m_actors.push_back(std::move(actor));
-    }
 
-    /// <summary>
-    /// Removes actors from the scene based on persistence flags.
-    /// 
-    /// This method provides selective actor removal, allowing certain actors
-    /// to persist across scene changes while removing others. This is useful
-    /// for maintaining continuity of important game objects across level transitions.
-    /// 
-    /// Removal logic:
-    /// - Non-persistent actors are always removed
-    /// - Persistent actors are only removed if force=true
-    /// - Uses iterator-based removal for safe container modification
-    /// 
-    /// Common use cases:
-    /// - Scene transitions where some objects should carry over
-    /// - Level resets requiring complete cleanup
-    /// - Gameplay events that clear specific actor categories
-    /// </summary>
-    /// <param name="force">If true, removes all actors regardless of persistence; if false, preserves persistent actors</param>
-    void Scene::RemoveAllActors(bool force) {
-        // Use manual iterator loop for conditional removal
-        // std::erase_if can't be used here due to complex removal logic
-        for (auto iter = m_actors.begin(); iter != m_actors.end(); ) {
-            // Determine if this actor should be removed
-            // Remove if: not persistent OR force removal is requested
-            if (!(*iter)->persistent || force) {
-                // Call Destroyed() on the actor before removing it
-                // This allows the actor to clean up resources, save state, etc.
-                (*iter)->Destroyed();
+                //light set
 
-                // erase() invalidates current iterator but returns next valid iterator
-                // This allows us to continue iteration safely
-                iter = m_actors.erase(iter);
+                int index = 0;
+                for (auto light : lights) {
+                    std::string lightName = "u_lights[" + std::to_string(index++) + "]";
+                    light->SetProgram(*program, lightName, camera->view);
+
+                }
             }
-            else {
-                // This actor survives - manually advance to next
-                // Don't use iter++ in the for loop due to conditional advancement
-                iter++;
-            }
-        }
-    }
 
-    bool Scene::Start() {
-        // Initialize all actors after the scene is fully constructed
-        // This ensures all actors exist before any Start() methods run
-        // allowing actors to safely find and reference other actors
-        for (auto& actor : m_actors) {
-            // Call each actor's initialization routine
-            actor->Start();
-        }
 
-        // Return success - could be extended to handle initialization failures
-        return true;
-    }
-
-    void Scene::Destroyed() {
-        // Notify all actors that the scene is being destroyed
-        // Gives actors a chance to clean up resources, save state, etc.
-        for (auto& actor : m_actors) {
-            actor->Destroyed();
-        }
-
-        // Clear the actor container
-        // unique_ptr ensures all actors are properly deleted
-        m_actors.clear();
-    }
-
-    /// <summary>
-    /// Loads a complete scene from a named configuration file.
-    /// 
-    /// This method provides the primary entry point for data-driven scene creation,
-    /// loading serialized scene data and preparing it for immediate gameplay use.
-    /// 
-    /// Loading process:
-    /// 1. Load and parse the serialized scene document
-    /// 2. Process scene data through Read() method (prototypes and actors)
-    /// 3. Initialize all loaded actors by calling their Start() methods
-    /// 4. Return success/failure status for error handling
-    /// 
-    /// The method handles complete scene setup, including prototype registration
-    /// and actor initialization, making the scene immediately ready for use.
-    /// </summary>
-    /// <param name="sceneName">Name/path of the scene file to load</param>
-    /// <returns>True if the scene loaded successfully, false on any error</returns>
-    bool Scene::Load(const std::string& sceneName) {
-        // Create a document to hold the parsed serialized data
-        neu::serial::document_t document;
-
-        // Attempt to load and parse the scene file
-        // Load() handles file I/O and JSON/serialization parsing
-        if (!neu::serial::Load(sceneName, document)) {
-            // Log error with scene name for debugging
-            LOG_ERROR("Could not load scene {}", sceneName);
-            return false; // Early return on failure
-        }
-
-        // Process the loaded document to populate the scene
-        // Read() handles prototypes and actors sections
-        Read(document);
-
-        // Scene loaded successfully
-        return true;
-    }
-
-    /// <summary>
-    /// Deserializes scene data from serialized format.
-    /// 
-    /// This method processes serialized scene configuration to populate the scene
-    /// with prototypes and actors. It handles two main sections of scene data:
-    /// prototypes (reusable actor templates) and actors (immediate scene content).
-    /// 
-    /// Processing order:
-    /// 1. Load base Object properties (name, active, etc.)
-    /// 2. Process prototypes and register them with the Factory
-    /// 3. Process actors and add them to the scene
-    /// 
-    /// The method integrates with the Factory system to enable both direct actor
-    /// creation and prototype-based instantiation, providing flexible scene
-    /// composition strategies.
-    /// </summary>
-    /// <param name="value">Serialized data containing scene configuration</param>
-    void Scene::Read(const serial_data_t& value) {
-        // Load base Object properties first (name, active, etc.)
-        // This calls the parent class's Read() implementation
-        // Object::Read(value);
-
-        // SECTION 1: Process prototype definitions
-        // Check if the serialized data contains a "prototypes" section
-        if (SERIAL_CONTAINS(value, prototypes)) {
-            // Iterate through each prototype definition in the array
-            for (auto& actorValue : SERIAL_AT(value, prototypes).GetArray()) {
-                // Create a new base Actor instance via Factory
-                // This uses the Factory pattern for type-safe object creation
-                auto actor = Factory::Instance().Create<Actor>("Actor");
-
-                // Load the actor's configuration from serialized data
-                // This populates all actor properties (transform, components, etc.)
-                actor->Read(actorValue);
-
-                // Extract the actor's name to use as the prototype identifier
-                std::string name = actor->name;
-
-                // Register this configured actor as a reusable prototype
-                // Other actors can now be instantiated from this template
-                Factory::Instance().RegisterPrototype<Actor>(name, std::move(actor));
+            // Iterate through all actors in the scene
+            for (auto& actor : m_actors) {
+                // Only render actors that are marked as active
+                // This parallels the Update() logic for consistency
+                if (actor->active) {
+                    // Pass the renderer to each actor
+                    // Each actor is responsible for its own drawing implementation
+                    actor->Draw(renderer);
+                }
             }
         }
 
-        // SECTION 2: Process direct actor definitions
-        // Check if the serialized data contains an "actors" section
-        if (SERIAL_CONTAINS(value, actors)) {
-            // Iterate through each actor definition in the array
-            for (auto& actorValue : SERIAL_AT(value, actors).GetArray()) {
-                // Create a new Actor instance via Factory
-                // Actors may reference prototypes defined above
-                auto actor = Factory::Instance().Create<Actor>("Actor");
 
-                // Load the actor's configuration from serialized data
-                actor->Read(actorValue);
 
-                // Add the actor to the scene without starting it yet
-                // start=false defers initialization until all actors are loaded
-                // This ensures all actors exist before any Start() methods run
-                AddActor(std::move(actor), false);
+
+
+        /// <summary>
+        /// Adds an actor to the scene by transferring ownership of the actor.
+        /// 
+        /// This method incorporates a new actor into the scene, setting up the
+        /// bidirectional relationship between the actor and scene, and optionally
+        /// initializing the actor immediately.
+        /// 
+        /// Integration process:
+        /// 1. Set the actor's scene pointer to establish parent relationship
+        /// 2. Optionally call Start() to initialize the actor
+        /// 3. Transfer ownership to the scene's actor container
+        /// 
+        /// The scene pointer enables actors to access scene-wide functionality
+        /// and query other actors. The start parameter allows for batch actor
+        /// addition without immediate initialization (useful during scene loading).
+        /// </summary>
+        /// <param name="actor">A unique pointer to the actor to be added. Ownership of the actor is transferred to the scene.</param>
+        /// <param name="start">Whether to immediately call Start() on the actor for initialization</param>
+        void Scene::AddActor(std::unique_ptr<Actor> actor, bool start) {
+            // Validate that we're not trying to add a null pointer
+            // ASSERT_MSG will help catch bugs during development
+            ASSERT_MSG(actor, "Attempted to add null actor to scene");
+
+            // Establish back-reference from actor to scene
+            // This allows actors to query the scene, find other actors, etc.
+            actor->scene = this;
+
+            // Optionally initialize the actor immediately
+            // During batch loading, we skip Start() and call it later for all actors
+            if (start) actor->Start();
+
+            // Transfer ownership to the scene's container
+            // std::move is required to transfer unique_ptr ownership
+            // push_back adds to the end of the list
+            m_actors.push_back(std::move(actor));
+        }
+
+        /// <summary>
+        /// Removes actors from the scene based on persistence flags.
+        /// 
+        /// This method provides selective actor removal, allowing certain actors
+        /// to persist across scene changes while removing others. This is useful
+        /// for maintaining continuity of important game objects across level transitions.
+        /// 
+        /// Removal logic:
+        /// - Non-persistent actors are always removed
+        /// - Persistent actors are only removed if force=true
+        /// - Uses iterator-based removal for safe container modification
+        /// 
+        /// Common use cases:
+        /// - Scene transitions where some objects should carry over
+        /// - Level resets requiring complete cleanup
+        /// - Gameplay events that clear specific actor categories
+        /// </summary>
+        /// <param name="force">If true, removes all actors regardless of persistence; if false, preserves persistent actors</param>
+        void Scene::RemoveAllActors(bool force) {
+            // Use manual iterator loop for conditional removal
+            // std::erase_if can't be used here due to complex removal logic
+            for (auto iter = m_actors.begin(); iter != m_actors.end(); ) {
+                // Determine if this actor should be removed
+                // Remove if: not persistent OR force removal is requested
+                if (!(*iter)->persistent || force) {
+                    // Call Destroyed() on the actor before removing it
+                    // This allows the actor to clean up resources, save state, etc.
+                    (*iter)->Destroyed();
+
+                    // erase() invalidates current iterator but returns next valid iterator
+                    // This allows us to continue iteration safely
+                    iter = m_actors.erase(iter);
+                }
+                else {
+                    // This actor survives - manually advance to next
+                    // Don't use iter++ in the for loop due to conditional advancement
+                    iter++;
+                }
             }
         }
+
+        bool Scene::Start() {
+            // Initialize all actors after the scene is fully constructed
+            // This ensures all actors exist before any Start() methods run
+            // allowing actors to safely find and reference other actors
+            for (auto& actor : m_actors) {
+                // Call each actor's initialization routine
+                actor->Start();
+            }
+
+            // Return success - could be extended to handle initialization failures
+            return true;
+        }
+
+        void Scene::Destroyed() {
+            // Notify all actors that the scene is being destroyed
+            // Gives actors a chance to clean up resources, save state, etc.
+            for (auto& actor : m_actors) {
+                actor->Destroyed();
+            }
+
+            // Clear the actor container
+            // unique_ptr ensures all actors are properly deleted
+            m_actors.clear();
+        }
+
+        /// <summary>
+        /// Loads a complete scene from a named configuration file.
+        /// 
+        /// This method provides the primary entry point for data-driven scene creation,
+        /// loading serialized scene data and preparing it for immediate gameplay use.
+        /// 
+        /// Loading process:
+        /// 1. Load and parse the serialized scene document
+        /// 2. Process scene data through Read() method (prototypes and actors)
+        /// 3. Initialize all loaded actors by calling their Start() methods
+        /// 4. Return success/failure status for error handling
+        /// 
+        /// The method handles complete scene setup, including prototype registration
+        /// and actor initialization, making the scene immediately ready for use.
+        /// </summary>
+        /// <param name="sceneName">Name/path of the scene file to load</param>
+        /// <returns>True if the scene loaded successfully, false on any error</returns>
+        bool Scene::Load(const std::string & sceneName) {
+            // Create a document to hold the parsed serialized data
+            neu::serial::document_t document;
+
+            // Attempt to load and parse the scene file
+            // Load() handles file I/O and JSON/serialization parsing
+            if (!neu::serial::Load(sceneName, document)) {
+                // Log error with scene name for debugging
+                LOG_ERROR("Could not load scene {}", sceneName);
+                return false; // Early return on failure
+            }
+
+            // Process the loaded document to populate the scene
+            // Read() handles prototypes and actors sections
+            Read(document);
+
+            // Scene loaded successfully
+            return true;
+        }
+
+        /// <summary>
+        /// Deserializes scene data from serialized format.
+        /// 
+        /// This method processes serialized scene configuration to populate the scene
+        /// with prototypes and actors. It handles two main sections of scene data:
+        /// prototypes (reusable actor templates) and actors (immediate scene content).
+        /// 
+        /// Processing order:
+        /// 1. Load base Object properties (name, active, etc.)
+        /// 2. Process prototypes and register them with the Factory
+        /// 3. Process actors and add them to the scene
+        /// 
+        /// The method integrates with the Factory system to enable both direct actor
+        /// creation and prototype-based instantiation, providing flexible scene
+        /// composition strategies.
+        /// </summary>
+        /// <param name="value">Serialized data containing scene configuration</param>
+        void Scene::Read(const serial_data_t & value) {
+            // Load base Object properties first (name, active, etc.)
+            // This calls the parent class's Read() implementation
+            // Object::Read(value);
+
+            // SECTION 1: Process prototype definitions
+            // Check if the serialized data contains a "prototypes" section
+            if (SERIAL_CONTAINS(value, prototypes)) {
+                // Iterate through each prototype definition in the array
+                for (auto& actorValue : SERIAL_AT(value, prototypes).GetArray()) {
+                    // Create a new base Actor instance via Factory
+                    // This uses the Factory pattern for type-safe object creation
+                    auto actor = Factory::Instance().Create<Actor>("Actor");
+
+                    // Load the actor's configuration from serialized data
+                    // This populates all actor properties (transform, components, etc.)
+                    actor->Read(actorValue);
+
+                    // Extract the actor's name to use as the prototype identifier
+                    std::string name = actor->name;
+
+                    // Register this configured actor as a reusable prototype
+                    // Other actors can now be instantiated from this template
+                    Factory::Instance().RegisterPrototype<Actor>(name, std::move(actor));
+                }
+            }
+
+            // SECTION 2: Process direct actor definitions
+            // Check if the serialized data contains an "actors" section
+            if (SERIAL_CONTAINS(value, actors)) {
+                // Iterate through each actor definition in the array
+                for (auto& actorValue : SERIAL_AT(value, actors).GetArray()) {
+                    // Create a new Actor instance via Factory
+                    // Actors may reference prototypes defined above
+                    auto actor = Factory::Instance().Create<Actor>("Actor");
+
+                    // Load the actor's configuration from serialized data
+                    actor->Read(actorValue);
+
+                    // Add the actor to the scene without starting it yet
+                    // start=false defers initialization until all actors are loaded
+                    // This ensures all actors exist before any Start() methods run
+                    AddActor(std::move(actor), false);
+                }
+            }
+        }
+
+
+
     }
-
-
-}
