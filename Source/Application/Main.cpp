@@ -7,6 +7,14 @@ int main(int argc, char* argv[]) {
     LOG_INFO("initialize engine...");
     neu::GetEngine().Initialize();
 
+    auto renderTexture = std::make_shared<neu::RenderTexture>();
+    renderTexture->Create(512, 512);
+    neu::Resources().AddResource("renderTexture", renderTexture);
+
+    renderTexture = std::make_shared<neu::RenderTexture>();
+    renderTexture->Create(1024, 1024);
+    neu::Resources().AddResource("postprocessTexture", renderTexture);
+
     // initialize scene
     auto scene = std::make_shared <neu::Scene>();
     scene->Load("Scenes/scene03.json");
@@ -18,9 +26,6 @@ int main(int argc, char* argv[]) {
     SDL_Event e;
     bool quit = false;
 
-    auto renderTexture = std::make_shared<neu::RenderTexture>();
-    renderTexture->Create(512, 512);
-    neu::Resources().AddResource("renderTexture", renderTexture);
 	//auto editor = std::make_unique<neu::Editor>(); where to find editor
 
     while (!quit) {

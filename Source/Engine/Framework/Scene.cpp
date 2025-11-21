@@ -60,7 +60,9 @@ namespace neu {
 
     void Scene::UpdateGUI()
     {
+
         ImGui::ColorEdit3("Ambient", glm::value_ptr(m_ambientLight));
+        ImGui::Checkbox("Post Process", &m_postprocess);
     }
 
     /// <summary>
@@ -112,15 +114,25 @@ namespace neu {
         std::vector<Program*> programs(programSet.begin(), programSet.end());
 
         for (auto& camera : cameras) {
-            if (camera->outputTexture) {
+            PostProcessComponent* postprocessComponent = camera->owner->GetComponent<PostProcessComponent>();
+            bool renderToTexture = camera->outputTexture && (!postprocessComponent || (postprocessComponent && m_postprocess));
+            if (renderToTexture) {
                 camera->outputTexture->BindFramebuffer();
                 glViewport(0, 0, camera->outputTexture->m_size.x, camera->outputTexture->m_size.y);
             }
             camera->Clear();
             DrawPass(renderer, programs, lights, camera);
-            if (camera->outputTexture) {
+            if (renderToTexture) {
                 camera->outputTexture->UnbindFramebuffer();
                 glViewport(0, 0, renderer.GetWidth(), renderer.GetHeight());
+            }
+            if (renderToTexture && postprocessComponent) {
+                auto postProcessProgram = Resources().Get<Program>("shaders/postprocess.prog");
+                postProcessProgram->Use();
+                postprocessComponent->Apply(*postProcessProgram);
+                camera->outputTexture->Bind();
+                auto actor = GetActorByName("postprocess");
+                actor->Draw(renderer);
             }
         }
     }
@@ -324,6 +336,8 @@ namespace neu {
         /// </summary>
         /// <param name="value">Serialized data containing scene configuration</param>
         void Scene::Read(const serial_data_t & value) {
+            SERIAL_READ_NAME(value, "ambient_light", m_ambientLight);
+            SERIAL_READ_NAME(value, "postprocess", m_postprocess);
             // Load base Object properties first (name, active, etc.)
             // This calls the parent class's Read() implementation
             // Object::Read(value);
