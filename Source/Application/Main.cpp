@@ -12,12 +12,16 @@ int main(int argc, char* argv[]) {
     neu::Resources().AddResource("renderTexture", renderTexture);
 
     renderTexture = std::make_shared<neu::RenderTexture>();
-    renderTexture->Create(1024, 1024);
+    renderTexture->Create(1024,1024);
     neu::Resources().AddResource("postprocessTexture", renderTexture);
+
+    renderTexture = std::make_shared<neu::RenderTexture>();
+    renderTexture->CreateDepth(1024,1024);
+    neu::Resources().AddResource("shadowTexture", renderTexture);
 
     // initialize scene
     auto scene = std::make_shared <neu::Scene>();
-    scene->Load("Scenes/scene03.json");
+    scene->Load("Scenes/scene04.json");
     scene->Start();
 
 	auto editor = std::make_unique<neu::Editor>();

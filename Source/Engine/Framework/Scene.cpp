@@ -127,6 +127,7 @@ namespace neu {
                 glViewport(0, 0, renderer.GetWidth(), renderer.GetHeight());
             }
             if (renderToTexture && postprocessComponent) {
+                camera->Clear(); // <-- add
                 auto postProcessProgram = Resources().Get<Program>("shaders/postprocess.prog");
                 postProcessProgram->Use();
                 postprocessComponent->Apply(*postProcessProgram);

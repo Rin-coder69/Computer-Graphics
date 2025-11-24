@@ -17,13 +17,13 @@ namespace neu {
 		program.SetUniform(name + ".color", color);
 		program.SetUniform(name + ".intensity", intensity);
 		program.SetUniform(name + ".range", range);
-		program.SetUniform(name + ".innerSpotAngle", innerSpotAngle);
-		program.SetUniform(name + ".outerSpotAngle", outerSpotAngle);
+		program.SetUniform(name + ".innerSpotAngle", glm::radians(innerSpotAngle));
+		program.SetUniform(name + ".outerSpotAngle", glm::radians(outerSpotAngle));
 	}
 	void LightComponent::Read(const serial_data_t& value)
 	{
 		std::string type;
-		SERIAL_READ(value, type);
+		SERIAL_READ_NAME(value, "lightType", type);
 		if(equalsIgnoreCase(type, "Point"))
 		
 			lightType = LightType::Point;
@@ -54,7 +54,7 @@ namespace neu {
 			ImGui::DragFloat("Range", &range, 0.1f, 0.0f);
 		}
 		if (lightType == LightType::Spot) {
-			ImGui::DragFloat("Outer Cutoff", &innerSpotAngle, 0.1f, 0.0f, 90.0f);
+			ImGui::DragFloat("Inner Cutoff", &innerSpotAngle, 0.1f, 0.0f, 90.0f);
 			ImGui::DragFloat("Outer Cutoff", &outerSpotAngle, 0.1f, 0.0f, 90.0f);
 		}
 	}

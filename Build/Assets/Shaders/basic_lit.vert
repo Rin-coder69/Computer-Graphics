@@ -73,7 +73,7 @@ vec3 calculateLight(in Light light, in vec3 position, in vec3 normal)
 			//point light calculations
 			break;
 		case DIRECTIONAL:
-		light_dir =light.direction;
+		light_dir = -light.direction;
 		attenuation = 1.0;
 			//directional light calculations
 			break;
@@ -84,7 +84,7 @@ vec3 calculateLight(in Light light, in vec3 position, in vec3 normal)
 		attenuation = calculateAttenuation(light_distance, light.range);
 			//spot light calculations
 
-			float angle = acos(dot(light_dir, light.direction));
+			float angle = acos(dot(light_dir, -light.direction));
 			if(angle > light.outerSpotAngle) attenuation = 0.0;
 			else
 			{
@@ -102,22 +102,19 @@ vec3 calculateLight(in Light light, in vec3 position, in vec3 normal)
 	//vec3 diffuse = light.color * u_material.baseColor * NdotL;
 
 	//specular
-	vec3 reflection = reflect(-light_dir,normal);
+	//vec3 reflection = reflect(-light_dir,normal);
 	vec3 view_dir = normalize(position);
-//	intensity = max(dot(reflection,view_dir),0);
-//	intensity =  pow(intensity,128);
-	float specular = max(dot(reflection,view_dir),0);//ask about removing or not
+	//intensity = max(dot(reflection,view_dir),0);
+	//intensity =  pow(intensity,128);
+	//float specular = max(dot(reflection,view_dir),0);//ask about removing or not
 
 	//blinn phong
 	vec3 halfway_dir = normalize(light_dir + view_dir);
 	float NdotH = max(dot(normal,halfway_dir),0);
 	NdotH = pow(NdotH, u_material.shininess);
-	vec3 spec = light.color * intensity * specular;
+	vec3 specular = vec3(NdotH);
 
-	//phong
-	//vec3 reflection = reflect(-light
-
-	return (diffuse + spec) * light.intensity * attenuation;
+	return (diffuse + specular) * light.intensity * attenuation;
 }
 
 

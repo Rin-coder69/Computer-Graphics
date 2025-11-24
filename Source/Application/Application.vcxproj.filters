@@ -149,6 +149,9 @@
     <None Include="..\..\Build\Assets\Shaders\postprocess.frag">
       <Filter>Assets\Shaders</Filter>
     </None>
+    <None Include="..\..\Build\Assets\Scenes\scene04.json">
+      <Filter>Assets\Scene</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\Build\Assets\Textures\beast.png">

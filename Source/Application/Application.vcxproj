@@ -228,6 +228,7 @@
     <None Include="..\..\Build\Assets\Scenes\scene01.json" />
     <None Include="..\..\Build\Assets\Scenes\scene02.json" />
     <None Include="..\..\Build\Assets\Scenes\scene03.json" />
+    <None Include="..\..\Build\Assets\Scenes\scene04.json" />
     <None Include="..\..\Build\Assets\Shaders\basic_lit.frag" />
     <None Include="..\..\Build\Assets\Shaders\basic_lit.vert" />
     <None Include="..\..\Build\Assets\Shaders\basic.frag" />

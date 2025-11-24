@@ -4,6 +4,6 @@
 	"baseColor": [ 1, 1, 1 ],
 	"normalMap": "textures/rocks_normal.jpg",
 	"shininess": 128,
-	"tiling": [ 20, 20 ],
+	"tiling": [ 5, 5 ],
 	"offset": [ 0.1, 0 ]
 }

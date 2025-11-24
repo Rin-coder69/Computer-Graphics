@@ -51,28 +51,69 @@ uniform sampler2D u_emissiveMap;
 uniform Light u_lights[5];
 uniform int u_numLights;
 
+float calculateAttenuation(in float light_distance, in float range)
+{	
+	float attenuation = max( 0.0, (1.0 - (light_distance / range)));
+	return attenuation * attenuation;
+} 
+
 vec3 calculateLight(in Light light,in vec3 position, in vec3 normal, in float specularMask)
 {
+	float attenuation;
+	vec3 light_dir;
+	switch(light.type){
+	case POINT:
+			{
+			light_dir = normalize(light.position - position);
 
-    vec3 light_dir = normalize(light.position - position);
-    float intensity = max(dot(light_dir, normal), 0);
-    //vec3 diffuse = light.color * material.baseColor * intensity;
-	vec3 diffuse = light.color * intensity * u_material.baseColor;
+			float light_distance = length(light.position - position);
+			attenuation = calculateAttenuation(light_distance, light.range);
+			}
+			//point light calculations
+			break;
+		case DIRECTIONAL:
+		light_dir = -light.direction;
+		attenuation = 1.0;
+			//directional light calculations
+			break;
+		case SPOT:
+		{
+			light_dir = normalize(light.position - position);
+			float light_distance = length(light.position - position);
+			attenuation = calculateAttenuation(light_distance, light.range);
+			//spot light calculations
+
+			float angle = acos(dot(light_dir, -light.direction));
+			if(angle > light.outerSpotAngle) attenuation = 0.0;
+			else
+			{
+			float spotAttenuation = smoothstep(light.outerSpotAngle + 0.001, light.innerSpotAngle, angle);
+			attenuation *= spotAttenuation;
+			}
+			}
+			break;
+	}
+	//diffuse
 	
-	//phong
-	//vec3 reflection = reflect(-light_dir, normal);
-	//vec3 view_dir = normalize(-position);
-	//intensity = max(dot(reflection, view_dir),0);
+	float intensity = max(dot(normal,light_dir),0);
+	float NdotL = max(dot(normal,light_dir),0);
+	vec3 diffuse = light.color * u_material.baseColor * NdotL;
+	//vec3 diffuse = light.color * u_material.baseColor * NdotL;
 
-	//blinn-phong
-	vec3 view_dir = normalize(-position);
+	//specular
+	//vec3 reflection = reflect(-light_dir,normal);
+	vec3 view_dir = normalize(position);
+	//intensity = max(dot(reflection,view_dir),0);
+	//intensity =  pow(intensity,128);
+	//float specular = max(dot(reflection,view_dir),0);//ask about removing or not
+
+	//blinn phong
 	vec3 halfway_dir = normalize(light_dir + view_dir);
-	intensity = max(dot(normal, halfway_dir), 0);
+	float NdotH = max(dot(normal,halfway_dir),0);
+	NdotH = pow(NdotH, u_material.shininess);
+	vec3 specular = vec3(NdotH) * specularMask;
 
-	intensity = pow(intensity, u_material.shininess);
-	vec3 specular = vec3(intensity) * specularMask;
-
-	return u_ambient_light + diffuse + specular;
+	return (diffuse + specular) * light.intensity * attenuation;
 
 }
 

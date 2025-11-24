@@ -1,0 +1,138 @@
+{
+  "ambient_light": [ 0.2, 0.2, 0.2 ],
+  "postprocess": false,
+
+  "actors": [
+    {
+      "name": "light",
+      "persistent": true,
+      "transform": {
+        "position": [ 0, 10, 0 ],
+        "rotation": [ -90, 0, 0 ],
+        "scale": [ 1, 1, 1 ]
+      },
+      "components": [
+        {
+          "type": "LightComponent",
+          "lightType": "directional",
+          "color": [ 1, 1, 1 ],
+          "intensity": 1,
+          "range": 40
+        }
+      ]
+    },
+    {
+      "name": "postprocess",
+      "persistent": true,
+      "active": false,
+      "transform": {
+        "position": [ 0, 0, 0 ],
+        "rotation": [ 0, 0, 0 ],
+        "scale": [ 1, 1, 1 ]
+      },
+      "components": [
+        {
+          "type": "ModelRenderer",
+          "model": "models/quad.obj",
+          "material": "materials/postprocess.mat"
+        }
+      ]
+    },
+
+    {
+      "name": "box",
+      "persistent": true,
+      "transform": {
+        "position": [ 0, 2, 0 ],
+        "rotation": [ 0, 180, 0 ],
+        "scale": [ 1, 1, 1 ]
+      },
+      "components": [
+        {
+          "type": "ModelRenderer",
+          "model": "models/cube.obj",
+          "material": "materials/crate.mat"
+        }
+      ]
+    },
+
+    {
+      "name": "Matikanetannhauser",
+      "persistent": true,
+      "transform": {
+        "position": [ -1, 1, 0 ],
+        "rotation": [ -90, 0, 0 ],
+        "scale": [ 1, 1, 1 ]
+      },
+      "components": [
+        {
+          "type": "ModelRenderer",
+          "model": "models/tenhauser.fbx",
+          "material": "materials/test.mat"
+        }
+      ]
+    },
+
+    {
+      "name": "floor",
+      "persistent": true,
+      "transform": {
+        "position": [ 0, -1, 0 ],
+        "rotation": [ 0, 180, 0 ],
+        "scale": [ 1, 1, 1 ]
+      },
+      "components": [
+        {
+          "type": "ModelRenderer",
+          "model": "models/plane.obj",
+          "material": "materials/floor.mat"
+        }
+      ]
+    },
+
+    {
+      "name": "camera",
+      "persistent": true,
+      "transform": {
+        "position": [ 0, 2, 2 ],
+        "rotation": [ 0, 0, 0 ],
+        "scale": [ 1, 1, 1 ]
+      },
+      "components": [
+        {
+          "type": "CameraComponent",
+          "outputTexture": "postprocessTexture"
+        },
+        {
+          "type": "PostProcessComponent"
+        },
+        {
+          "type": "FirstPersonController",
+          "speed": 5,
+          "sensitivity": 0.2
+        }
+      ]
+    },
+
+    {
+      "name": "camera_rtt",
+      "persistent": true,
+      "transform": {
+        "position": [ 0, 2, 2 ],
+        "rotation": [ 0, 0, 0 ],
+        "scale": [ 1, 1, 1 ]
+      },
+      "components": [
+        {
+          "type": "CameraComponent",
+          "outputTexture": "renderTexture"
+        },
+        {
+          "type": "FirstPersonController",
+          "speed": 5,
+          "sensitivity": 0.2
+        }
+      ]
+    }
+  ]
+}
