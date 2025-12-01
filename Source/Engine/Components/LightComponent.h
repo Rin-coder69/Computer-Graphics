@@ -26,6 +26,7 @@ namespace neu {
 		glm::vec3 color{ 1, 1, 1 };
 		float intensity{ 1 };
 		float range{ 20 };
+		bool shadowCaster{ false };
 		LightType lightType = LightType::Point; //0: point, 1: directional, 2: spot
 		float outerSpotAngle = 30.0f;
 		float innerSpotAngle;//for spot light

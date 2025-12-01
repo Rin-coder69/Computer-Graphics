@@ -8,6 +8,8 @@ namespace neu {
 			GrayScale    = (1 << 0),
 			ColorTint    = (1 << 1),
 			ScanLine    =	(1 << 2),
+			InvertColors = (1 << 3),
+			Grain = (1 << 4),
 
 		};
 
@@ -23,5 +25,7 @@ namespace neu {
 	public:
 		Parameters parameters = Parameters::None;
 		glm::vec3 colorTint  { 1,1,1 };
+		float blend{ 1.0f };
+		float intensity{ 1.0f };
 	};
 }

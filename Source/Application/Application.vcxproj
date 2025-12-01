@@ -221,6 +221,7 @@
     <None Include="..\..\Build\Assets\Materials\Refraction.mat" />
     <None Include="..\..\Build\Assets\Materials\rock.mat" />
     <None Include="..\..\Build\Assets\Materials\rtt.mat" />
+    <None Include="..\..\Build\Assets\Materials\shadowMaterial.mat" />
     <None Include="..\..\Build\Assets\Materials\SkyBox.mat" />
     <None Include="..\..\Build\Assets\Materials\spot.mat" />
     <None Include="..\..\Build\Assets\Materials\squirrel.mat" />
@@ -238,6 +239,12 @@
     <None Include="..\..\Build\Assets\Shaders\basic_phong.prog" />
     <None Include="..\..\Build\Assets\Shaders\basic_phong.vert" />
     <None Include="..\..\Build\Assets\Shaders\cubemap.frag" />
+    <None Include="..\..\Build\Assets\Shaders\depth.frag" />
+    <None Include="..\..\Build\Assets\Shaders\depth.prog" />
+    <None Include="..\..\Build\Assets\Shaders\depth.vert" />
+    <None Include="..\..\Build\Assets\Shaders\lit_phong_shadow.frag" />
+    <None Include="..\..\Build\Assets\Shaders\lit_phong_shadow.prog" />
+    <None Include="..\..\Build\Assets\Shaders\lit_phong_shadow.vert" />
     <None Include="..\..\Build\Assets\Shaders\postprocess.frag" />
     <None Include="..\..\Build\Assets\Shaders\postprocess.prog" />
     <None Include="..\..\Build\Assets\Shaders\postprocess.vert" />

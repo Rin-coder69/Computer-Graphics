@@ -4,16 +4,20 @@ layout (location = 0) in vec3 a_position;
 layout (location = 1) in vec2 a_texcoord;
 layout (location = 2) in vec3 a_normal;
 
-out VS_OUT{
-out vec2 texcoord;
-out vec3 position;
-out vec3 normal;
+out VS_OUT
+{
+	vec2 texcoord;
+	vec3 position;
+	vec3 normal;
+	vec4 shadowcoord;
+	mat3 tbn;
+} vs_out;
 
- } vs_out;
 
 uniform mat4 u_model;
 uniform mat4 u_view;
 uniform mat4 u_projection;
+uniform mat4 u_shadow_vp;
 
 uniform vec3 u_ambient_light; 
 
@@ -34,9 +38,6 @@ struct Material
 };
 
 uniform Material u_material;
-uniform mat4 model;
-uniform mat4 view;
-uniform mat4 projection;
 
 
 void main()
@@ -45,9 +46,12 @@ void main()
 	
 	mat4 model_view = u_view * u_model;
 	vec4 view_pos = model_view * vec4(a_position, 1.0);
-	vs_out.position = view_pos.xyz;
 
+	vs_out.position = vec3(model_view * vec4(a_position,1));
+	vs_out.position = view_pos.xyz;
 	vs_out.normal = normalize(mat3(model_view) * a_normal);
-	
+	vs_out.shadowcoord = u_shadow_vp * u_model * vec4(a_position,1);
+	// tbn
+
 	gl_Position = u_projection * view_pos;
 }
