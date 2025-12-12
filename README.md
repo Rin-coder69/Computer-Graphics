@@ -102,3 +102,4 @@ Include a license here (e.g., MIT, Apache) or indicate if the project is current
 
 🧠 About Computer Graphics
 Computer graphics is the field of computing that focuses on generating and manipulating visual content. It’s used in games, simulations, UI systems, visual effects, and more — encompassing both rasterization and shader-based real-time visuals.
+<img width="795" height="645" alt="Screenshot 2025-12-10 203128" src="https://github.com/user-attachments/assets/b3b657cd-47be-4a99-83cd-b43f1baa5fc4" />
